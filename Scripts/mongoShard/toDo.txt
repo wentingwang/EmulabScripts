@@ -1,0 +1,9 @@
+Error checking
+
+->	Three config servers
+->	Atleast one query router
+->	Port checking
+
+
+->	Warning that stop will remove logs too
+->	Hard and soft stops
