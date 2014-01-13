@@ -5,7 +5,7 @@
 REQUIRED_NUMBER_OF_ARGUMENTS=2
 if [ $# -lt $REQUIRED_NUMBER_OF_ARGUMENTS ]
 then
-	echo "Usage: $0 <type_of_stop> <path_to_config_file>"
+	echo "Usage: $0 <type_of_start> <path_to_config_file>"
 	echo "Type of start: -h for hard, -s for soft"
 	exit 1
 fi
@@ -17,7 +17,7 @@ elif [ "$1" == "-s" ]
 then
 	TYPE_OF_START=0
 else
-	echo "Unrecongized stop type: -h for hard, -s for soft"
+	echo "Unrecongized start type: -h for hard, -s for soft"
 	exit 1
 fi
 
