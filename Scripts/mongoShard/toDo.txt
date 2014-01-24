@@ -6,4 +6,4 @@ Error checking
 
 
 ->	Warning that stop will remove logs too
-->	Hard and soft stops
+->	Hard and soft stops                       - done
