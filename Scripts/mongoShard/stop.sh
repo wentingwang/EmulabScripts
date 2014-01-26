@@ -37,7 +37,13 @@ NEW_CONFIG_SERVERS=''
 counter=0
 for node in ${CONFIG_SERVERS//,/ }
 do
-	NEW_CONFIG_SERVERS=$NEW_CONFIG_SERVERS$node.$EXPERIMENT.$PROJ.$ENV,
+	if [ "$IP" == "TRUE" ] 
+	then
+		CONFIG_SERVER_FQDN=$node
+	else
+		CONFIG_SERVER_FQDN=$node.$EXPERIMENT.$PROJ.$ENV
+	fi
+	NEW_CONFIG_SERVERS=$NEW_CONFIG_SERVERS$CONFIG_SERVER_FQDN,
 	
 	if [ $counter -gt 0 ]
 	then
@@ -45,14 +51,19 @@ do
 	else
 		let counter=counter+1
 	fi
-	CONFIG_DB_STRING=$CONFIG_DB_STRING$node.$EXPERIMENT.$PROJ.$ENV:$CONFIG_SERVER_PORT
+	CONFIG_DB_STRING=$CONFIG_DB_STRING$CONFIG_SERVER_FQDN:$CONFIG_SERVER_PORT
 done
 
 #construct the query router FQDNs
 NEW_QUERY_ROUTERS=''
 for node in ${QUERY_ROUTERS//,/ }
 do
+    if [ "$IP" == "TRUE" ] 
+	then
+		NEW_QUERY_ROUTERS=$NEW_QUERY_ROUTERS$node,
+	else
         NEW_QUERY_ROUTERS=$NEW_QUERY_ROUTERS$node.$EXPERIMENT.$PROJ.$ENV,
+    fi
 done
 
 #construct the replica sets FQDNs
@@ -68,7 +79,12 @@ do
 			else
 				let counter=counter+1
 			fi
-        	NEW_REPLICA_SETS=$NEW_REPLICA_SETS$node.$EXPERIMENT.$PROJ.$ENV
+        	if [ "$IP" == "TRUE" ] 
+			then
+				NEW_REPLICA_SETS=$NEW_REPLICA_SETS$node
+			else
+        		NEW_REPLICA_SETS=$NEW_REPLICA_SETS$node.$EXPERIMENT.$PROJ.$ENV
+        	fi
 		done
 		NEW_REPLICA_SETS=$NEW_REPLICA_SETS";"
 done
@@ -84,7 +100,7 @@ do
         then
         	COMMAND=$COMMAND"sudo rm /var/log/mongoConfigServer.log;sudo rm -rf /data/configdb;"
         fi
-        echo $COMMAND
+        echo "Config server shutdown command is $COMMAND"
 		ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
 			$COMMAND"
 done
@@ -100,7 +116,7 @@ do
         then
         	COMMAND=$COMMAND"sudo rm /var/log/mongoQueryRouter.log;"
         fi
-        echo $COMMAND
+        echo "Query router shutdown command is $COMMAND"
         ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
         	$COMMAND"
 done
@@ -121,7 +137,7 @@ do
         	then
         		COMMAND=$COMMAND"sudo rm -rf /srv/mongodb/rs$counter-$replNum;sudo rm /var/log/mongors$counter-$replNum.log;"
         	fi
-        	echo $COMMAND
+        	echo "Replica set shutdown command is $COMMAND"
 	        ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
 	        	$COMMAND"
 			let replNum=replNum+1;
