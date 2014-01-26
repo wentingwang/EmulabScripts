@@ -107,7 +107,13 @@ do
         then
         	COMMAND=$COMMAND"sudo mkdir -p "$CONFIG_SERVER_DB_FOLDER"configdb$counter;"
         fi
-        COMMAND=$COMMAND"sudo $MONGOD --configsvr --fork --logappend --logpath "$LOG_FOLDER"mongoConfigServer$counter.log --dbpath "$CONFIG_SERVER_DB_FOLDER"configdb$counter --port "$CONFIG_SERVER_PORT";"
+        COMMAND=$COMMAND" sudo $MONGOD --configsvr --fork --logappend --logpath "$LOG_FOLDER"mongoConfigServer$counter.log --dbpath "$CONFIG_SERVER_DB_FOLDER"configdb$counter --port "$CONFIG_SERVER_PORT
+        if [ "$IP" == "TRUE" ]
+        then
+        	COMMAND=$COMMAND" --bind_ip $node;"
+        else
+        	COMMAND=$COMMAND";"
+        fi
 		echo "Config server startup command is $COMMAND"
 		ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
 			$COMMAND"
@@ -131,7 +137,13 @@ do
 	        then
 	        	COMMAND=$COMMAND"sudo mkdir -p "$SERVER_DB_FOLDER"rs$counter-$replNum;"
 	        fi
-	        COMMAND=$COMMAND"sudo $MONGOD --port $port --fork --logappend --smallfiles --logpath "$LOG_FOLDER"mongors$counter-$replNum.log --dbpath "$SERVER_DB_FOLDER"rs$counter-$replNum --replSet rs$counter -oplogSize 128;"
+	        COMMAND=$COMMAND" sudo $MONGOD --port $port --fork --logappend --smallfiles --logpath "$LOG_FOLDER"mongors$counter-$replNum.log --dbpath "$SERVER_DB_FOLDER"rs$counter-$replNum --replSet rs$counter -oplogSize 128"
+			if [ "$IP" == "TRUE" ]
+	        then
+	        	COMMAND=$COMMAND" --bind_ip $node;"
+	        else
+	        	COMMAND=$COMMAND";"
+	        fi
 			echo "Replica startup command is $COMMAND"
 	        ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
 				$COMMAND"
