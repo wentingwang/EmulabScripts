@@ -104,7 +104,7 @@ do
         COMMAND="sudo $MONGOD --shutdown --dbpath "$CONFIG_SERVER_DB_FOLDER"configdb$counter;"
         if [ $TYPE_OF_STOP -eq 1 ]
         then
-        	COMMAND=$COMMAND"sudo rm "$LOG_FOLDER"mongoConfigServer$counter.log;sudo rm -rf "$CONFIG_SERVER_DB_FOLDER"configdb;"
+        	COMMAND=$COMMAND"sudo rm "$LOG_FOLDER"mongoConfigServer$counter.log;sudo rm -rf "$CONFIG_SERVER_DB_FOLDER"configdb$counter;"
         fi
         echo "Config server shutdown command is $COMMAND"
 		ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
