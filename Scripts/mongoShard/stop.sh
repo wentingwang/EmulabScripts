@@ -95,7 +95,7 @@ echo "Shutting down config servers:"
 for  node in ${NEW_CONFIG_SERVERS//,/ }
 do
         echo "Shutting down $node ..."
-        COMMAND='sudo mongod --shutdown --dbpath /data/configdb;'
+        COMMAND='sudo $PATH_TO_MONGO_BINmongod --shutdown --dbpath /data/configdb;'
         if [ $TYPE_OF_STOP -eq 1 ]
         then
         	COMMAND=$COMMAND"sudo rm /var/log/mongoConfigServer.log;sudo rm -rf /data/configdb;"
@@ -111,7 +111,7 @@ echo "Shutting down query routers:"
 for  node in ${NEW_QUERY_ROUTERS//,/ }
 do
         echo "Shutting down $node ..."
-        COMMAND='sudo pkill mongos;'
+        COMMAND='sudo pkill $PATH_TO_MONGO_BINmongos;'
         if [ $TYPE_OF_STOP -eq 1 ]
         then
         	COMMAND=$COMMAND"sudo rm /var/log/mongoQueryRouter.log;"
@@ -132,7 +132,7 @@ do
         for node in ${set//,/ }
 		do
         	echo "Shutting down $node ..."
-        	COMMAND='sudo mongod --shutdown --dbpath /srv/mongodb/rs$counter-$replNum;'
+        	COMMAND='sudo $PATH_TO_MONGO_BINmongod --shutdown --dbpath /srv/mongodb/rs$counter-$replNum;'
         	if [ $TYPE_OF_STOP -eq 1 ]
         	then
         		COMMAND=$COMMAND"sudo rm -rf /srv/mongodb/rs$counter-$replNum;sudo rm /var/log/mongors$counter-$replNum.log;"
