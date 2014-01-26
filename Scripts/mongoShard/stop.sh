@@ -22,11 +22,16 @@ else
 fi
 
 CONFIG_FILE=$2
+
 echo "Config file is $CONFIG_FILE"
 echo ""
 
 #get the configuration parameters
 source $CONFIG_FILE
+
+MONGOD=$PATH_TO_MONGO_BIN"mongod"
+MONGOS=$PATH_TO_MONGO_BIN"mongos"
+MONGO=$PATH_TO_MONGO_BIN"mongo"
 
 ############################## PROCESS CONFIG FILE ################################
 
@@ -92,17 +97,19 @@ done
 ############################ SHUTDOWN ##########################################
 #shutdown the config servers
 echo "Shutting down config servers:"
+counter=0
 for  node in ${NEW_CONFIG_SERVERS//,/ }
 do
         echo "Shutting down $node ..."
-        COMMAND='sudo $PATH_TO_MONGO_BINmongod --shutdown --dbpath /data/configdb;'
+        COMMAND="sudo $MONGOD --shutdown --dbpath /data/configdb;"
         if [ $TYPE_OF_STOP -eq 1 ]
         then
-        	COMMAND=$COMMAND"sudo rm /var/log/mongoConfigServer.log;sudo rm -rf /data/configdb;"
+        	COMMAND=$COMMAND"sudo rm /var/log/mongoConfigServer$counter.log;sudo rm -rf /data/configdb;"
         fi
         echo "Config server shutdown command is $COMMAND"
 		ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
 			$COMMAND"
+		let counter=counter+1;
 done
 echo ""
 
@@ -111,7 +118,7 @@ echo "Shutting down query routers:"
 for  node in ${NEW_QUERY_ROUTERS//,/ }
 do
         echo "Shutting down $node ..."
-        COMMAND='sudo pkill $PATH_TO_MONGO_BINmongos;'
+        COMMAND="sudo pkill $MONGOS;"
         if [ $TYPE_OF_STOP -eq 1 ]
         then
         	COMMAND=$COMMAND"sudo rm /var/log/mongoQueryRouter.log;"
@@ -132,7 +139,7 @@ do
         for node in ${set//,/ }
 		do
         	echo "Shutting down $node ..."
-        	COMMAND='sudo $PATH_TO_MONGO_BINmongod --shutdown --dbpath /srv/mongodb/rs$counter-$replNum;'
+        	COMMAND="sudo $MONGOD --shutdown --dbpath /srv/mongodb/rs$counter-$replNum;"
         	if [ $TYPE_OF_STOP -eq 1 ]
         	then
         		COMMAND=$COMMAND"sudo rm -rf /srv/mongodb/rs$counter-$replNum;sudo rm /var/log/mongors$counter-$replNum.log;"

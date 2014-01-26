@@ -22,17 +22,22 @@ else
 fi
 
 CONFIG_FILE=$2
+
 echo "Config file is $CONFIG_FILE"
 echo ""
 
 #get the configuration parameters
 source $CONFIG_FILE
 
+MONGOD=$PATH_TO_MONGO_BIN"mongod"
+MONGOS=$PATH_TO_MONGO_BIN"mongos"
+MONGO=$PATH_TO_MONGO_BIN"mongo"
+
 ############################## PROCESS CONFIG FILE ################################
 
 #construct the config server FQDNs
 #build the command for the query router in the process
-QUERY_ROUTER_STRING='sudo $PATH_TO_MONGO_BINmongos --fork --logappend --logpath /var/log/mongoQueryRouter.log --configdb '
+QUERY_ROUTER_STRING="sudo $MONGOS --fork --logappend --logpath /var/log/mongoQueryRouter.log --configdb "
 NEW_CONFIG_SERVERS=''
 counter=0
 for node in ${CONFIG_SERVERS//,/ }
@@ -92,6 +97,7 @@ done
 
 ############################## SETUP ################################
 #setup the config servers
+counter=0
 echo "Setting up config servers:"
 for  node in ${NEW_CONFIG_SERVERS//,/ }
 do
@@ -101,10 +107,11 @@ do
         then
         	COMMAND=$COMMAND"sudo mkdir -p /data/configdb;"
         fi
-        COMMAND=$COMMAND"sudo $PATH_TO_MONGO_BINmongod --configsvr --fork --logappend --logpath /var/log/mongoConfigServer.log --dbpath /data/configdb --port "$CONFIG_SERVER_PORT";"
+        COMMAND=$COMMAND"sudo $MONGOD --configsvr --fork --logappend --logpath /var/log/mongoConfigServer$counter.log --dbpath /data/configdb --port "$CONFIG_SERVER_PORT";"
 		echo "Config server startup command is $COMMAND"
 		ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
 			$COMMAND"
+		let counter=counter+1;
 done
 echo ""
 
@@ -124,7 +131,7 @@ do
 	        then
 	        	COMMAND=$COMMAND"sudo mkdir -p /srv/mongodb/rs$counter-$replNum;"
 	        fi
-	        COMMAND=$COMMAND"sudo $PATH_TO_MONGO_BINmongod --port $port --fork --logappend --smallfiles --logpath /var/log/mongors$counter-$replNum.log --dbpath /srv/mongodb/rs$counter-$replNum --replSet rs$counter -oplogSize 128;"
+	        COMMAND=$COMMAND"sudo $MONGOD --port $port --fork --logappend --smallfiles --logpath /var/log/mongors$counter-$replNum.log --dbpath /srv/mongodb/rs$counter-$replNum --replSet rs$counter -oplogSize 128;"
 			echo "Replica startup command is $COMMAND"
 	        ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
 				$COMMAND"
@@ -177,7 +184,7 @@ then
 			done
 			echo "$INIT" > rs$counter-init.js
 			echo "$CONTENTS" > rs$counter-add.js
-			$PATH_TO_MONGO_BINmongo --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-init.js
+			$MONGO --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-init.js
 			let counter=counter+1;
 	done
 	echo "Sleeping for a minute waiting for the initiation of the replica sets to finish..."
@@ -186,7 +193,7 @@ then
 	for set in ${NEW_REPLICA_SETS//;/ }
 	do
 			startNode=${replicaSetAddNodes[$counter]}
-			$PATH_TO_MONGO_BINmongo --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-add.js
+			$MONGO --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-add.js
 			let counter=counter+1
 	done
 
@@ -207,5 +214,5 @@ then
 			let counter=counter+1;
 	done
 	echo "$CONTENTS" > shard.js
-	$PATH_TO_MONGO_BINmongo --host $queryRouter --port 27017 < shard.js
+	$MONGO --host $queryRouter --port 27017 < shard.js
 fi
