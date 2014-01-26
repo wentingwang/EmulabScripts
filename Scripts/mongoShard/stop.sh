@@ -101,10 +101,10 @@ counter=0
 for  node in ${NEW_CONFIG_SERVERS//,/ }
 do
         echo "Shutting down $node ..."
-        COMMAND="sudo $MONGOD --shutdown --dbpath /data/configdb;"
+        COMMAND="sudo $MONGOD --shutdown --dbpath "$CONFIG_SERVER_DB_FOLDER"configdb$counter;"
         if [ $TYPE_OF_STOP -eq 1 ]
         then
-        	COMMAND=$COMMAND"sudo rm /var/log/mongoConfigServer$counter.log;sudo rm -rf /data/configdb;"
+        	COMMAND=$COMMAND"sudo rm "$LOG_FOLDER"mongoConfigServer$counter.log;sudo rm -rf "$CONFIG_SERVER_DB_FOLDER"configdb;"
         fi
         echo "Config server shutdown command is $COMMAND"
 		ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
@@ -121,7 +121,7 @@ do
         COMMAND="sudo pkill $MONGOS;"
         if [ $TYPE_OF_STOP -eq 1 ]
         then
-        	COMMAND=$COMMAND"sudo rm /var/log/mongoQueryRouter.log;"
+        	COMMAND=$COMMAND"sudo rm "$LOG_FOLDER"mongoQueryRouter.log;"
         fi
         echo "Query router shutdown command is $COMMAND"
         ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
@@ -139,10 +139,10 @@ do
         for node in ${set//,/ }
 		do
         	echo "Shutting down $node ..."
-        	COMMAND="sudo $MONGOD --shutdown --dbpath /srv/mongodb/rs$counter-$replNum;"
+        	COMMAND="sudo $MONGOD --shutdown --dbpath "$SERVER_DB_FOLDER"rs$counter-$replNum;"
         	if [ $TYPE_OF_STOP -eq 1 ]
         	then
-        		COMMAND=$COMMAND"sudo rm -rf /srv/mongodb/rs$counter-$replNum;sudo rm /var/log/mongors$counter-$replNum.log;"
+        		COMMAND=$COMMAND"sudo rm -rf "$SERVER_DB_FOLDER"rs$counter-$replNum;sudo rm "$LOG_FOLDER"mongors$counter-$replNum.log;"
         	fi
         	echo "Replica set shutdown command is $COMMAND"
 	        ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "

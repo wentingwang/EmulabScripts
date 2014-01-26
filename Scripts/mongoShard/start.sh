@@ -37,7 +37,7 @@ MONGO=$PATH_TO_MONGO_BIN"mongo"
 
 #construct the config server FQDNs
 #build the command for the query router in the process
-QUERY_ROUTER_STRING="sudo $MONGOS --fork --logappend --logpath /var/log/mongoQueryRouter.log --configdb "
+QUERY_ROUTER_STRING="sudo $MONGOS --fork --logappend --logpath "$LOG_FOLDER"mongoQueryRouter.log --configdb "
 NEW_CONFIG_SERVERS=''
 counter=0
 for node in ${CONFIG_SERVERS//,/ }
@@ -105,9 +105,9 @@ do
         COMMAND=''
         if [ $TYPE_OF_START -eq 1 ]
         then
-        	COMMAND=$COMMAND"sudo mkdir -p /data/configdb;"
+        	COMMAND=$COMMAND"sudo mkdir -p "$CONFIG_SERVER_DB_FOLDER"configdb$counter;"
         fi
-        COMMAND=$COMMAND"sudo $MONGOD --configsvr --fork --logappend --logpath /var/log/mongoConfigServer$counter.log --dbpath /data/configdb --port "$CONFIG_SERVER_PORT";"
+        COMMAND=$COMMAND"sudo $MONGOD --configsvr --fork --logappend --logpath "$LOG_FOLDER"mongoConfigServer$counter.log --dbpath "$CONFIG_SERVER_DB_FOLDER"configdb$counter --port "$CONFIG_SERVER_PORT";"
 		echo "Config server startup command is $COMMAND"
 		ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
 			$COMMAND"
@@ -129,9 +129,9 @@ do
         	COMMAND=''
 	        if [ $TYPE_OF_START -eq 1 ]
 	        then
-	        	COMMAND=$COMMAND"sudo mkdir -p /srv/mongodb/rs$counter-$replNum;"
+	        	COMMAND=$COMMAND"sudo mkdir -p "$SERVER_DB_FOLDER"rs$counter-$replNum;"
 	        fi
-	        COMMAND=$COMMAND"sudo $MONGOD --port $port --fork --logappend --smallfiles --logpath /var/log/mongors$counter-$replNum.log --dbpath /srv/mongodb/rs$counter-$replNum --replSet rs$counter -oplogSize 128;"
+	        COMMAND=$COMMAND"sudo $MONGOD --port $port --fork --logappend --smallfiles --logpath "$LOG_FOLDER"mongors$counter-$replNum.log --dbpath "$SERVER_DB_FOLDER"rs$counter-$replNum --replSet rs$counter -oplogSize 128;"
 			echo "Replica startup command is $COMMAND"
 	        ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
 				$COMMAND"
