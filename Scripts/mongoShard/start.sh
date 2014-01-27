@@ -170,6 +170,8 @@ if [ $TYPE_OF_START -eq 1 ]
 then
 	####################### REPLICATION ######################
 	#setup the replicas
+	echo "Sleeping for a minute waiting for all servers to come up.."
+	sleep 60
 	RETURN='
 	'
 	counter=0
@@ -196,6 +198,7 @@ then
 			done
 			echo "$INIT" > rs$counter-init.js
 			echo "$CONTENTS" > rs$counter-add.js
+			echo "Running $MONGO --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-init.js"
 			$MONGO --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-init.js
 			let counter=counter+1;
 	done
@@ -205,6 +208,7 @@ then
 	for set in ${NEW_REPLICA_SETS//;/ }
 	do
 			startNode=${replicaSetAddNodes[$counter]}
+			echo "$MONGO --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-add.js"
 			$MONGO --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-add.js
 			let counter=counter+1
 	done
@@ -226,5 +230,6 @@ then
 			let counter=counter+1;
 	done
 	echo "$CONTENTS" > shard.js
+	echo "Running $MONGO --host $queryRouter --port 27017 < shard.js"
 	$MONGO --host $queryRouter --port 27017 < shard.js
 fi
