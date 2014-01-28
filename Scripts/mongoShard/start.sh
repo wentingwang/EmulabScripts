@@ -170,8 +170,8 @@ if [ $TYPE_OF_START -eq 1 ]
 then
 	####################### REPLICATION ######################
 	#setup the replicas
-	echo "Sleeping for a minute waiting for all servers to come up.."
-	sleep 60
+	#echo "Sleeping for a minute waiting for all servers to come up.."
+	#sleep 60
 	RETURN='
 	'
 	counter=0
@@ -199,7 +199,18 @@ then
 			echo "$INIT" > rs$counter-init.js
 			echo "$CONTENTS" > rs$counter-add.js
 			echo "Running $MONGO --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-init.js"
-			$MONGO --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-init.js
+			EXIT_STATUS=1
+			RESPONSE="y"
+			while [ $EXIT_STATUS -eq 1 -a "$RESPONSE" == "y" ]
+			do
+				$MONGO --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-init.js
+				EXIT_STATUS=$?
+				if [ $EXIT_STATUS -eq 1 ]
+				then
+					echo "Command failed. Try again? (y or n)"
+					read RESPONSE
+				fi
+			done
 			let counter=counter+1;
 	done
 	echo "Sleeping for a minute waiting for the initiation of the replica sets to finish..."
@@ -209,7 +220,18 @@ then
 	do
 			startNode=${replicaSetAddNodes[$counter]}
 			echo "$MONGO --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-add.js"
-			$MONGO --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-add.js
+			EXIT_STATUS=1
+			RESPONSE="y"
+			while [ $EXIT_STATUS -eq 1 -a "$RESPONSE" == "y" ]
+			do
+				$MONGO --host $startNode --port $REPLICA_SET_START_PORT < rs$counter-add.js
+				EXIT_STATUS=$?
+				if [ $EXIT_STATUS -eq 1 ]
+				then
+					echo "Command failed. Try again? (y or n)"
+					read RESPONSE
+				fi
+			done
 			let counter=counter+1
 	done
 
@@ -231,5 +253,16 @@ then
 	done
 	echo "$CONTENTS" > shard.js
 	echo "Running $MONGO --host $queryRouter --port 27017 < shard.js"
-	$MONGO --host $queryRouter --port 27017 < shard.js
+	EXIT_STATUS=1
+	RESPONSE="y"
+	while [ $EXIT_STATUS -eq 1 -a "$RESPONSE" == "y" ]
+	do
+		$MONGO --host $queryRouter --port 27017 < shard.js
+		EXIT_STATUS=$?
+		if [ $EXIT_STATUS -eq 1 ]
+		then
+			echo "Command failed. Try again? (y or n)"
+			read RESPONSE
+		fi
+	done
 fi
