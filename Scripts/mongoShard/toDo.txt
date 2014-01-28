@@ -3,7 +3,7 @@ Error checking
 ->	Three config servers
 ->	Atleast one query router
 ->	Port checking
-
+->	Return status checking and retrying
 
 ->	Warning that stop will remove logs too
 ->	Hard and soft stops                       - done

@@ -42,7 +42,7 @@ NEW_CONFIG_SERVERS=''
 counter=0
 for node in ${CONFIG_SERVERS//,/ }
 do
-	if [ "$IP" == "TRUE" ] 
+	if [ "$IP" == "TRUE" -o "$FQDN" == "TRUE" ] 
 	then
 		CONFIG_SERVER_FQDN=$node
 	else
@@ -64,7 +64,7 @@ done
 NEW_QUERY_ROUTERS=''
 for node in ${QUERY_ROUTERS//,/ }
 do
-    if [ "$IP" == "TRUE" ] 
+    if [ "$IP" == "TRUE" -o "$FQDN" == "TRUE" ] 
 	then
 		NEW_QUERY_ROUTERS=$NEW_QUERY_ROUTERS$node,
 	else
@@ -85,7 +85,7 @@ do
 			else
 				let counter=counter+1
 			fi
-        	if [ "$IP" == "TRUE" ] 
+        	if [ "$IP" == "TRUE" -o "$FQDN" == "TRUE" ] 
 			then
 				NEW_REPLICA_SETS=$NEW_REPLICA_SETS$node
 			else
