@@ -118,7 +118,7 @@ echo "Shutting down query routers:"
 for  node in ${NEW_QUERY_ROUTERS//,/ }
 do
         echo "Shutting down $node ..."
-        COMMAND="sudo pkill $MONGOS;"
+        COMMAND="sudo pkill mongos;"
         if [ $TYPE_OF_STOP -eq 1 ]
         then
         	COMMAND=$COMMAND"sudo rm "$LOG_FOLDER"mongoQueryRouter.log;"
