@@ -10,12 +10,14 @@ PATH_TO_DEFAULT=$DATASET_FILES_LOCATION"default.csv"
 
 if [ -f $PATH_TO_DEFAULT ]
 then
-	./addDataAmazon.sh default.csv &&
 	./shardCollectionAmazon.sh &&
 	./addDataAmazon.sh $1 &&
-	echo "Sleeping for a minute waiting for the data to be replicated" &&
-	sleep 60 &&
-	./reshardAmazon.sh
+    ./statsAmazon.sh &&
+	echo "Sleeping for 30 minute waiting for the data to be replicated" &&
+	sleep 1800 &&
+    ./shardStatus.sh
+	./reshardAmazon.sh &&
+    ./shardStatus.sh
 else
 	echo "Need a default.csv that enters exactly one record into the collection"
 	exit 2

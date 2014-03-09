@@ -49,6 +49,14 @@ cd -
 echo "#### Resharding done ####"
 echo ""
 
+cd $CLUSTER_TOOLS
+source $CLUSTER_SETUP_CONF
+cp $LOG_FOLDER/mongoQueryRouter.log $OUT_FOLDER/mongoQueryRouter_$1_$2.log
+cd -
+
+echo "#### Copied Log Folder ####"
+echo ""
+
 echo "#### Tearing down cluster ####"
 
 STOP_SCRIPT="./stop.sh"
