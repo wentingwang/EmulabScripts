@@ -40,7 +40,7 @@ echo ""
 echo "#### Adding data and running reshard ####"
 
 RESHARD_SCRIPT="./runAllAmazon.sh"
-RESHARD_COMMAND="$RESHARD_SCRIPT $DATA_FILE"
+RESHARD_COMMAND="$RESHARD_SCRIPT $1"
 echo "$RESHARD_COMMAND"
 cd $COMMAND_TOOLS
 $RESHARD_COMMAND
