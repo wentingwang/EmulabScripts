@@ -7,8 +7,8 @@ fi
 ./shardCollectionAmazon.sh
 ./addDataParallelAmazon.sh $1
 ./statsAmazon.sh
-echo "Sleeping for 30 minute waiting for the data to be replicated"
-sleep 1800
+echo "Checking whether data is stable"
+./collectionStableAmazon.sh $1
 ./shardStatus.sh
 ./reshardAmazon.sh
 ./shardStatus.sh

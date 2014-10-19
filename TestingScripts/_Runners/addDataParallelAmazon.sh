@@ -1,4 +1,4 @@
-for ((i=1; i<=$1; i++))
+for ((i=$1; i<=$2; i++))
 do
     echo Starting $i mongoimport
     ./addDataAmazon.sh part_$i.csv &
