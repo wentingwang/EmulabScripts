@@ -38,8 +38,8 @@ do
     node_array="$node_array node$i"
 done
 
-echo "gcloud compute instances create $node_array --zone us-central1-a --image centos-6 --machine-type n1-standard-2 --disk name=datadisk mode=ro --project ferrous-osprey-732 --metadata-from-file startup-script=startup.sh"
-gcloud compute instances create $node_array --zone us-central1-a --image debian-7 --machine-type n1-standard-2 --disk name=datadisk mode=ro --project ferrous-osprey-732 --metadata-from-file startup-script=startup.sh
+echo "gcloud compute instances create $node_array --zone us-central1-a --image debian-7 --machine-type n1-standard-4 --disk name=datadisk mode=ro --project ferrous-osprey-732 --metadata-from-file startup-script=startup.sh"
+gcloud compute instances create $node_array --zone us-central1-a --image debian-7 --machine-type n1-standard-4 --disk name=datadisk mode=ro --project ferrous-osprey-732 --metadata-from-file startup-script=startup.sh
 
 #echo "gcloud compute instances attach-disk $node_array --disk datadisk --zone us-central1-a --mode ro"
 #gcloud compute instances attach-disk $node_array --disk datadisk --zone us-central1-a --mode ro
