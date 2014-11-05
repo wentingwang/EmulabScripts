@@ -5,6 +5,8 @@ if [ $# -le 2 ]; then
 	exit
 fi
 
+NUM_INSTANCE=0
+REMOVE_DISK=0
 while [[ $# > 1 ]]
 do
 key="$1"
