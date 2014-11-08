@@ -1,12 +1,13 @@
 #!/bin/bash
 
 if [ $# -le 2 ]; then
-	echo "Usage: ./deployCluster.sh -n <number of instances> -c <1 for create disk/any number otherwise>"
+	echo "Usage: ./deployCluster.sh -n <number of instances> -c <1 for create disk/any number otherwise> -p <node name prefix, default node>"
 	exit
 fi
 
 ATTACH_DISK=0
 NUM_INSTANCE=0
+NAME_PREFIX="node"
 while [[ $# > 1 ]]
 do
 key="$1"
@@ -19,6 +20,10 @@ case $key in
     ;;
     -c|--create_disk)
     ATTACH_DISK="$1"
+    shift
+    ;;
+    -p|--name_prefix)
+    NAME_PREFIX="$1"
     shift
     ;;
     *)
@@ -37,7 +42,7 @@ fi
 node_array=""
 for (( i=1; i<=$NUM_INSTANCE; i++ ))
 do
-    node_array="$node_array node$i"
+    node_array="$node_array $NAME_PREFIX$i"
 done
 
 echo "gcloud compute instances create $node_array --zone us-central1-a --image debian-7 --machine-type n1-standard-4 --disk name=datadisk mode=ro --project ferrous-osprey-732 --metadata-from-file startup-script=startup.sh"
