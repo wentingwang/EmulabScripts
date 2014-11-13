@@ -1,7 +1,7 @@
 for ((i=$1; i<=$2; i++))
 do
     echo Starting $i mongoimport
-    ./addDataAmazon.sh part_$i.csv &
+    .EmulabScripts/TestingScripts/_Runners/addDataAmazon.sh part_$i.csv &
 done
 
 while true
