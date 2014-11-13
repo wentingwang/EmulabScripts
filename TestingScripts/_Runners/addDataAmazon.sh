@@ -7,6 +7,6 @@ then
 	exit 1
 fi
 
-source details.conf
+source ./EmulabScripts/TestingScripts/_Runners/details.conf
 PATH_TO_DATA_FILE=$DATASET_FILES_LOCATION$1
 mongoimport --host $ROUTER_IP --port $ROUTER_PORT --db amazondb --collection review_collection --type csv --file $PATH_TO_DATA_FILE --headerline
