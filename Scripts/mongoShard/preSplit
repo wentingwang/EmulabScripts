@@ -1,9 +1,9 @@
 var shServer = [ "wnode2", "wnode5", "wnode8", "wnode11", "wnode14", "wnode17", "wnode20", "wnode23", "wnode26", "wnode29","wnode32", "wnode35", "wnode38", "wnode41", "wnode44", "wnode47", "wnode50", "wnode53", "wnode56", "wnode59", "wnode62", "wnode65", "wnode68", "wnode71", "wnode74", "wnode77", "wnode80", "wnode83", "wnode86", "wnode89", "wnode92", "wnode95", "wnode98"];
-numServer=33
-count = 119304700
-gap = 70000
+count = 119304700;
+gap = 70000;
 for ( var x=gap; x<count; x+=gap ){
-    db.adminCommand({moveChunk : "amazondb.review_collection", middle : {user_id : x}, to : shServer[Math.floor(Math.random()*33)]})
+    db.adminCommand({split : "amazondb.review_collection", middle : {user_id : x}});
+    db.adminCommand({moveChunk : "amazondb.review_collection", middle : {user_id : x}, to : shServer[Math.floor(Math.random()*shServer.length)]})
 }
 
 people = ["Marc", "Bill", "George", "Eliot", "Matt", "Trey", "Tracy", "Greg", "Steve", "Kristina",
@@ -13,62 +13,35 @@ people = ["Marc", "Bill", "George", "Eliot", "Matt", "Trey", "Tracy", "Greg", "S
 count = 2000000;
 
 comment="First album I've bought since Napster","We've come a long way since the days of
-
 Ninetendo synthesized music! I say without exaggeration that the Chrono Cross Original
-
 Soundtrack is probably some of the best instrumental music I've ever heard. Yasunori Mitsuda
-
 incorporates so many instruments and musical styles to this collection it's a real credit to his
-
 talent. Guitars violins cellos and the piano are just a few of the instruments at play here. A great
-
 deal of care has been given to this music and it really shows in the end product. Anyone who
-
 enjoys good music will find it here.Maybe the best tribute to a musician isn't critical acclaim but
-
 emulation by the fans. I've come across sheet music remixes and covers of Mitsuda's work on this
-
 album all done by fans as tribute and the desire to perform such music for themselves. This album
-
 is good stuff. Frankly I hope Mitsuda makes more.probably some of the best by the fans. I've
-
 come across sheet music remixes and covers of Mitsuda's work on this probably some of the best
-
 instrumental music I've ever heard. Yasunori Mitsuda incorporates so many instruments and
-
 musical styles to this collection it's a real credit to his talent. Guitars violins cellos and the piano
-
 are just a few of the instruments at play here. A great deal of care has been given to this music
-
 and it really shows in the end product. critical acclaim but emulation by the fans. I've come across
-
 sheet music remixes and covers of Mitsuda's work on this probably some of the best instrumental
-
 music I've ever heard. Yasunori Mitsuda incorporates so many instruments and musical styles to
-
 this collection it's a real credit to his talent. Guitars violins cellos and the piano are just a few of the
-
 instruments at play here. A great deal of care has been given to this music and it really shows in
-
 the end product. Anyone who enjoys good music will find it here.Maybe the best tribute to a
-
 musician isn't critical acclaim but emulation by the fans. I've come across sheet music remixes
-
 and covers of Mitsuda's work on this probably some of the best instrumental music I've ever
-
 heard. Yasunori Mitsuda incorporates so many instruments and musical styles to this Mitsuda
-
 incorporates so many instruments and musical styles to this collection it's a real credit to his
-
 talent. Guitars violins cellos and the piano are just a few of the instruments at play here. A great
-
 deal of care has been given to this music and it really shows in the end product. Anyone who
-
 enjoys good music will find it here.Maybe the best tribute to a musician isn't critical acclaim but
+emulation by the fans. I've come across sheet music remixes and covers of Mitsuda's work on this";
 
-emulation by the fans. I've come across sheet music remixes and covers of Mitsuda's work on this
-
-for(var i=0; i<1193047; i++){
+for(var i=0; i<119304700; i++){
 
 name = people[Math.floor(Math.random()*people.length)];
 
