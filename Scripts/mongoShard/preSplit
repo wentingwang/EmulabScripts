@@ -5,7 +5,7 @@ count = 119304700;
 gap = 70000;
 for ( var x=gap; x<count; x+=gap ){
     db.adminCommand({split : "amazondb.review_collection", middle : {user_id : x}});
-    db.adminCommand({moveChunk : "amazondb.review_collection", middle : {user_id : x}, to : rs[Math.floor(Math.random()*rs.length)]})
+   // db.adminCommand({moveChunk : "amazondb.review_collection", middle : {user_id : x}, to : rs[Math.floor(Math.random()*rs.length)]})
 }
 sh.setBalancerState(true)
 use amazondb;
