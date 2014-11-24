@@ -1,3 +1,4 @@
+-------------presplit----------------------
 use amdin;
 sh.stopBalancer();
 var shServer = [ "wnode2", "wnode5", "wnode8", "wnode11", "wnode14", "wnode17", "wnode20", "wnode23", "wnode26", "wnode29","wnode32", "wnode35", "wnode38", "wnode41", "wnode44", "wnode47", "wnode50", "wnode53", "wnode56", "wnode59", "wnode62", "wnode65", "wnode68", "wnode71", "wnode74", "wnode77", "wnode80", "wnode83", "wnode86", "wnode89", "wnode92", "wnode95", "wnode98"];
@@ -9,6 +10,7 @@ for ( var x=gap; x<count; x+=gap ){
     db.adminCommand({moveChunk : "amazondb.review_collection", find : {user_id : x}, to : rs[Math.floor(Math.random()*rs.length)]})
 }
 sh.setBalancerState(true)
+----------------load---------------------
 use amazondb;
 people = ["Marc", "Bill", "George", "Eliot", "Matt", "Trey", "Tracy", "Greg", "Steve", "Kristina", "Katie", "Jeff"];
 
