@@ -6,6 +6,6 @@ for  node in ${QUERY_ROUTERS//,/ }
 do
         echo "loading data to $node ... $GIT_STRING"
         ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $node "
-            $GIT_STRING" &
+            $QUERY_ROUTER_STRING" &
 done
 echo ""
