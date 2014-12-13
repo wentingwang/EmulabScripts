@@ -3,7 +3,7 @@ use amdin;
 sh.stopBalancer();
 var shServer = [ "wnode2", "wnode5", "wnode8", "wnode11", "wnode14", "wnode17", "wnode20", "wnode23", "wnode26", "wnode29","wnode32", "wnode35", "wnode38", "wnode41", "wnode44", "wnode47", "wnode50", "wnode53", "wnode56", "wnode59", "wnode62", "wnode65", "wnode68", "wnode71", "wnode74", "wnode77", "wnode80", "wnode83", "wnode86", "wnode89", "wnode92", "wnode95", "wnode98"];
 //var rs = ["rs0","rs2","rs3","rs1","rs4","rs5","rs6","rs7","rs8","rs9","rs10","rs12","rs13","rs11","rs14","rs15","rs16","rs17","rs18","rs19","rs20","rs22","rs23","rs21","rs24","rs25","rs26","rs27","rs28","rs29","rs30","rs31","rs32"];
-var rs = ["rs0","rs2","rs3","rs1","rs4","rs5","rs6","rs7",];
+var rs = ["rs0","rs2","rs3","rs1","rs4","rs5","rs6","rs7"];
 
 count = 10000000;
 gap = 70000;
