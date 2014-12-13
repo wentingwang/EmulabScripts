@@ -1,6 +1,6 @@
 source $1
 
-QUERY_ROUTER_STRING="/mnt/wmongo/mongo --host localhost --port 27018 < /home/wenting/EmulabScripts/TestingScripts/_JSFiles /generateData.js"
+QUERY_ROUTER_STRING="/mnt/wmongo/mongo --host localhost --port 27018 < /home/wenting/EmulabScripts/TestingScripts/_JSFiles/generateData.js"
 GIT_STRING="git clone https://github.com/wentingwang/EmulabScripts.git"
 for  node in ${QUERY_ROUTERS//,/ }
 do
