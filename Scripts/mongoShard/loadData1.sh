@@ -1,8 +1,8 @@
 source $1
 
 QUERY_ROUTER_STRING="/mnt/wmongo/mongo --host localhost --port 27018 < /home/wenting/EmulabScripts/TestingScripts/_JSFiles/generateData.js"
-GIT_STRING="git clone https://github.com/wentingwang/EmulabScripts.git"
-REMOVE_STRING="sudo rm -rf EmulabScritps"
+GIT_STRING="git clone http://github.com/wentingwang/EmulabScripts"
+REMOVE_STRING="sudo rm -rf EmulabScripts"
 for  node in ${QUERY_ROUTERS//,/ }
 do
         echo "clone git hub to $node ... $REMOVE_STRING"
