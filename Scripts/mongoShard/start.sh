@@ -172,7 +172,7 @@ then
     ####################### REPLICATION ######################
     #setup the replicas
     #echo "Sleeping for a minute waiting for all servers to come up.."
-    #sleep 60
+    #sleep 120
     RETURN='
     '
     counter=0
@@ -219,7 +219,7 @@ then
             let counter=counter+1;
     done
     echo "Sleeping for a minute waiting for the initiation of the replica sets to finish..."
-    sleep 60
+    sleep 120
     counter=0
     for set in ${NEW_REPLICA_SETS//;/ }
     do
