@@ -10,3 +10,6 @@ RESHARD="sh.enableSharding(\"amazondb\")\ndb.review_collection.ensureIndex({numb
 echo -e "$RESHARD" > reshard.js
 
 mongo --host $QUERY_ROUTERS < drop_collection.js
+mongo --host $QUERY_ROUTERS < reshard.js
+
+mongoimport --host $QUERY_ROUTERS --db amazondb --collection review_collection --file temp.json
