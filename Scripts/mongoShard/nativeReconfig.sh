@@ -2,7 +2,7 @@
 source "$1"
 echo $1
 export_start='date +%s'
-mongoexport --host $QUERY_ROUTERS  --db amazondb --collection review_collection --out temp.json
+mongoexport --host $QUERY_ROUTERS  --db amazondb --collection review_collection --out /mnt/temp.json
 export_end='date +%s'
 runtime=$((export_end-export_start))
 echo "export time=$runtime"
@@ -26,7 +26,7 @@ runtime=$((reshard_end-reshard_start))
 echo "reshard time=$runtime"
 
 import_start='date +%s'
-mongoimport --host $QUERY_ROUTERS --db amazondb --collection review_collection --file temp.json
+mongoimport --host $QUERY_ROUTERS --db amazondb --collection review_collection --file /mnt/temp.json
 import_end='date +%s'
 runtime=$((import_end-import_start))
 echo "import time=$runtime"
