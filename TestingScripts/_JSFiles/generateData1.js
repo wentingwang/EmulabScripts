@@ -1,8 +1,8 @@
 use amazondb;
 people = ["Marc", "Bill", "George", "Eliot", "Matt", "Trey", "Tracy", "Greg", "Steve", "Kristina", "Katie", "Jeff"];
 
-totlaCount = 10000;
-numRow = 10000;
+totlaCount = 100000;
+numRow = 100000;
 
 for(var i=0; i<numRow; i++){
 
