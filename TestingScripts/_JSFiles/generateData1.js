@@ -15,4 +15,5 @@ db.review_collection.save({"name":name, "user_id":user_id, "boolean":boolean, "a
 }
 
 sh.enableSharding("amazondb")
+db.review_collection.ensureIndex({user_id:1})
 sh.shardCollection("amazondb.review_collection",{user_id:1})
